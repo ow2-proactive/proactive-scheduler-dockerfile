@@ -119,6 +119,13 @@ RUN sed -i -e 's/pa.scheduler.create.credentials.when.login=true/pa.scheduler.cr
 # Remove tasks from Studio
 COPY studio-config.js /home/paserver/data/scheduling/dist/war/studio/scripts/proactive/config.js
 
+# Time (in minutes) after which a down or lost node is eligible to periodic removal
+# If not set, or if not greater than 0, the down and lost nodes will never be removed automatically
+# pa.rm.nodes.unavailable.maxperiod
+ARG maxperiod=1440
+RUN sed -i -e "s/pa.rm.nodes.unavailable.maxperiod=1440/pa.rm.nodes.unavailable.maxperiod=${maxperiod}/g" $PROACTIVE_HOME/config/rm/settings.ini
+# RUN cat $PROACTIVE_HOME/config/rm/settings.ini | grep maxperiod
+
 VOLUME ${PROACTIVE_HOME}/logs
 VOLUME ${PROACTIVE_HOME}/data
 VOLUME /tmp
