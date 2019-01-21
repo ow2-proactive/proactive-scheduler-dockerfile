@@ -126,6 +126,12 @@ ARG maxperiod=1440
 RUN sed -i -e "s/pa.rm.nodes.unavailable.maxperiod=1440/pa.rm.nodes.unavailable.maxperiod=${maxperiod}/g" $PROACTIVE_HOME/config/rm/settings.ini
 # RUN cat $PROACTIVE_HOME/config/rm/settings.ini | grep maxperiod
 
+# Cron rm housekeeping expression
+ARG rmcron="*/30 * * * *"
+RUN sed -i "/pa.rm.nodes.unavailable.removal.frequency/c\pa.rm.nodes.unavailable.removal.frequency=${rmcron}" $PROACTIVE_HOME/config/rm/settings.ini
+
+
+
 VOLUME ${PROACTIVE_HOME}/logs
 VOLUME ${PROACTIVE_HOME}/data
 VOLUME /tmp
